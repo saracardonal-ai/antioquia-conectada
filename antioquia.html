@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antioquia Conectada - Descubrimiento Cultural</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Estilos para la sección de login */
+        .login-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            margin: 50px auto;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .logo {
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            color: #2e8b57;
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        .form-group input:focus {
+            border-color: #2e8b57;
+            outline: none;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: #2e8b57;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background-color: #236b47;
+        }
+        
+        .register-link {
+            margin-top: 25px;
+            color: #666;
+        }
+        
+        .register-link a {
+            color: #2e8b57;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            background-color: #fdecea;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .register-form {
+            display: none;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .toggle-form {
+            color: #2e8b57;
+            cursor: pointer;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+        
+        /* Estilos para la aplicación principal */
+        .header {
+            background-color: #2e8b57;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+        }
+        
+        .header .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .header .user-info span {
+            margin-right: 15px;
+        }
+        
+        .header .logout-btn {
+            background-color: white;
+            color: #2e8b57;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        .header .logout-btn:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            color: #2e8b57;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+        }
+        
+        .interests-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .interest-item {
+            display: flex;
+            align-items: center;
+            background-color: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .interest-item:hover {
+            background-color: #e9f5ef;
+        }
+        
+        .interest-item.selected {
+            background-color: #2e8b57;
+            color: white;
+        }
+        
+        .interest-item input {
+            display: none;
+        }
+        
+        .interest-item i {
+            margin-right: 8px;
+        }
+        
+        .update-btn {
+            background-color: #2e8b57;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .update-btn:hover {
+            background-color: #236b47;
+        }
+        
+        .recommendations {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .recommendation-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        
+        .recommendation-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .recommendation-card h3 {
+            color: #2e8b57;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .recommendation-card p {
+            margin-bottom: 10px;
+        }
+        
+        .recommendation-card .meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .recommendation-card .meta span {
+            display: flex;
+            align-items: center;
+        }
+        
+        .recommendation-card .meta i {
+            margin-right: 5px;
+        }
+        
+        .curious-facts {
+            margin-top: 20px;
+        }
+        
+        .fact-item {
+            background-color: #f8f9fa;
+            border-left: 4px solid #2e8b57;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .fact-item h4 {
+            color: #2e8b57;
+            margin-bottom: 5px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        
+        .loading i {
+            font-size: 2rem;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+        
+        .no-results i {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 15px;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: #2e8b57;
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .notification.error {
+            background-color: #e74c3c;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header .user-info {
+                margin-top: 10px;
+            }
+            
+            .interests-container {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sección de Login -->
+    <div id="loginSection">
+        <div class="login-container">
+            <div class="logo">
+                <h1><i class="fas fa-mountain"></i> Antioquia Conectada</h1>
+                <p>Descubrimiento Cultural con IA</p>
+            </div>
+            
+            <div id="loginError" class="error-message" style="display: none;">
+                <i class="fas fa-exclamation-circle"></i> <span id="loginErrorText"></span>
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <button type="submit" class="btn">Iniciar Sesión</button>
+            </form>
+            
+            <div class="register-link">
+                ¿No tienes cuenta? <span class="toggle-form" onclick="toggleRegisterForm()">Regístrate aquí</span>
+            </div>
+            
+            <div class="register-form" id="registerForm">
+                <h3>Crear una cuenta</h3>
+                <div class="form-group">
+                    <label for="reg-username">Usuario</label>
+                    <input type="text" id="reg-username" name="reg-username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="reg-password">Contraseña</label>
+                    <input type="password" id="reg-password" name="reg-password">
+                </div>
+                
+                <div class="form-group">
+                    <label for="reg-confirm-password">Confirmar Contraseña</label>
+                    <input type="password" id="reg-confirm-password" name="reg-confirm-password">
+                </div>
+                
+                <button type="button" class="btn" onclick="register()">Registrarse</button>
+                
+                <div class="register-link">
+                    ¿Ya tienes cuenta? <span class="toggle-form" onclick="toggleRegisterForm()">Inicia sesión</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección Principal (oculta inicialmente) -->
+    <div id="mainSection" style="display: none;">
+        <div class="header">
+            <h1><i class="fas fa-mountain"></i> Antioquia Conectada</h1>
+            <div class="user-info">
+                <span><i class="fas fa-user"></i> <span id="usernameDisplay"></span></span>
+                <button class="logout-btn" onclick="logout()">Cerrar Sesión</button>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="section">
+                <h2 class="section-title"><i class="fas fa-heart"></i> Selecciona tus intereses</h2>
+                
+                <div class="interests-container">
+                    <div class="interest-item" data-interest="historia">
+                        <input type="checkbox" id="historia">
+                        <label for="historia"><i class="fas fa-landmark"></i> Historia</label>
+                    </div>
+                    
+                    <div class="interest-item" data-interest="naturaleza">
+                        <input type="checkbox" id="naturaleza">
+                        <label for="naturaleza"><i class="fas fa-tree"></i> Naturaleza</label>
+                    </div>
+                    
+                    <div class="interest-item" data-interest="gastronomia">
+                        <input type="checkbox" id="gastronomia">
+                        <label for="gastronomia"><i class="fas fa-utensils"></i> Gastronomía</label>
+                    </div>
+                    
+                    <div class="interest-item" data-interest="arte">
+                        <input type="checkbox" id="arte">
+                        <label for="arte"><i class="fas fa-palette"></i> Arte</label>
+                    </div>
+                    
+                    <div class="interest-item" data-interest="aventura">
+                        <input type="checkbox" id="aventura">
+                        <label for="aventura"><i class="fas fa-hiking"></i> Aventura</label>
+                    </div>
+                </div>
+                
+                <button class="update-btn" onclick="updateRecommendations()">
+                    <i class="fas fa-sync-alt"></i> Actualizar Recomendaciones
+                </button>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title"><i class="fas fa-map-marked-alt"></i> Recomendaciones para ti</h2>
+                
+                <div id="recommendations-container">
+                    <div class="loading">
+                        <i class="fas fa-spinner"></i>
+                        <p>Cargando recomendaciones...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title"><i class="fas fa-lightbulb"></i> Datos curiosos de Antioquia</h2>
+                
+                <div class="curious-facts">
+                    <button class="update-btn" onclick="loadCuriousFacts()">
+                        <i class="fas fa-sync-alt"></i> Mostrar más datos curiosos
+                    </button>
+                    
+                    <div id="curious-facts-container">
+                        <div class="loading">
+                            <i class="fas fa-spinner"></i>
+                            <p>Cargando datos curiosos...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Base de datos de municipios
+        const municipios = {
+            "Medellín": {
+                "descripcion": "Capital de Antioquia, conocida como la 'Ciudad de la Eterna Primavera'",
+                "caracteristicas": {"historia": true, "naturaleza": true, "gastronomia": true, "arte": true, "aventura": true},
+                "dato_curioso": "Medellín fue la primera ciudad de América Latina en implementar un sistema de metro elevado.",
+                "clima": "Templado",
+                "mejor_epoca": "Todo el año"
+            },
+            "Guatapé": {
+                "descripcion": "Pueblo colorido conocido por sus zócalos decorados y el embalse de Peñol-Guatapé",
+                "caracteristicas": {"historia": false, "naturaleza": true, "gastronomia": true, "arte": true, "aventura": true},
+                "dato_curioso": "Cada casa en Guatapé tiene zócalos decorados que narran historias de la vida cotidiana.",
+                "clima": "Templado",
+                "mejor_epoca": "Diciembre a marzo"
+            },
+            "Santa Fe de Antioquia": {
+                "descripcion": "Primer capital de Antioquia, patrimonio histórico y cultural",
+                "caracteristicas": {"historia": true, "naturaleza": false, "gastronomia": true, "arte": true, "aventura": false},
+                "dato_curioso": "El Puente de Occidente, construido en 1895, fue uno de los puentes colgantes más largos de América Latina.",
+                "clima": "Cálido",
+                "mejor_epoca": "Junio a septiembre"
+            },
+            "Jardín": {
+                "descripcion": "Pueblo de montaña con arquitectura republicana y cafetales",
+                "caracteristicas": {"historia": true, "naturaleza": true, "gastronomia": true, "arte": true, "aventura": true},
+                "dato_curioso": "Jardín fue declarado Pueblo Patrimonio de Colombia en 2011 por su conservación arquitectónica y cultural.",
+                "clima": "Frío",
+                "mejor_epoca": "Marzo a mayo"
+            },
+            "Urabá": {
+                "descripcion": "Región con playas, comunidades indígenas y diversidad natural",
+                "caracteristicas": {"historia": true, "naturaleza": true, "gastronomia": true, "arte": true, "aventura": true},
+                "dato_curioso": "Urabá alberga una gran diversidad étnica incluyendo comunidades indígenas Embera, y es una de las regiones bananeras más importantes del mundo.",
+                "clima": "Cálido",
+                "mejor_epoca": "Diciembre a abril"
+            },
+            "El Peñol": {
+                "descripcion": "Famoso por su monolito de 220 metros de altura",
+                "caracteristicas": {"historia": false, "naturaleza": true, "gastronomia": true, "arte": false, "aventura": true},
+                "dato_curioso": "La Piedra del Peñol pesa aproximadamente 66 millones de toneladas y tiene 740 escalones para llegar a la cima.",
+                "clima": "Templado",
+                "mejor_epoca": "Diciembre a marzo"
+            },
+            "Abejorral": {
+                "descripcion": "Municipio con tradiciones cafeteras y paisajes montañosos",
+                "caracteristicas": {"historia": true, "naturaleza": true, "gastronomia": true, "arte": false, "aventura": false},
+                "dato_curioso": "Abejorral es conocido por su producción de café de alta calidad y sus tradicionales fiestas religiosas.",
+                "clima": "Frío",
+                "mejor_epoca": "Marzo a mayo"
+            },
+            "Entrerríos": {
+                "descripcion": "Conocido por su producción de fresas y paisajes de montaña",
+                "caracteristicas": {"historia": false, "naturaleza": true, "gastronomia": true, "arte": false, "aventura": false},
+                "dato_curioso": "Entrerríos celebra anualmente el Festival Nacional de la Fresa, atrayendo a miles de visitantes.",
+                "clima": "Frío",
+                "mejor_epoca": "Agosto a octubre"
+            },
+            "Sonsón": {
+                "descripcion": "Pueblo con arquitectura colonial y tradiciones religiosas",
+                "caracteristicas": {"historia": true, "naturaleza": false, "gastronomia": true, "arte": true, "aventura": false},
+                "dato_curioso": "Sonsón es conocido por su Semana Santa, declarada Patrimonio Cultural de la Nación.",
+                "clima": "Frío",
+                "mejor_epoca": "Marzo y abril"
+            },
+            "Cisneros": {
+                "descripcion": "Pequeño municipio con tradiciones mineras y paisajes montañosos",
+                "caracteristicas": {"historia": true, "naturaleza": true, "gastronomia": false, "arte": false, "aventura": true},
+                "dato_curioso": "Cisneros fue un importante centro minero durante la época colonial y aún conserva algunas minas en operación.",
+                "clima": "Templado",
+                "mejor_epoca": "Junio a agosto"
+            }
+        };
+
+        // Usuarios de ejemplo
+        let usuarios = {
+            "usuario1": "password1",
+            "usuario2": "password2"
+        };
+
+        // Usuario actual
+        let usuarioActual = null;
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar eventos para los intereses
+            const interestItems = document.querySelectorAll('.interest-item');
+            
+            interestItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const checkbox = this.querySelector('input[type="checkbox"]');
+                    checkbox.checked = !checkbox.checked;
+                    
+                    if (checkbox.checked) {
+                        this.classList.add('selected');
+                    } else {
+                        this.classList.remove('selected');
+                    }
+                });
+            });
+
+            // Configurar formulario de login
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                login();
+            });
+        });
+
+        function toggleRegisterForm() {
+            const form = document.getElementById('registerForm');
+            if (form.style.display === 'block') {
+                form.style.display = 'none';
+            } else {
+                form.style.display = 'block';
+            }
+        }
+
+        function showNotification(message, isError = false) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = isError ? 'notification error' : 'notification';
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (!username || !password) {
+                showLoginError("Por favor ingresa usuario y contraseña");
+                return;
+            }
+            
+            if (usuarios[username] && usuarios[username] === password) {
+                usuarioActual = username;
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('mainSection').style.display = 'block';
+                document.getElementById('usernameDisplay').textContent = username;
+                
+                // Cargar recomendaciones iniciales
+                updateRecommendations();
+                loadCuriousFacts();
+                
+                showNotification(`¡Bienvenido a Antioquia Conectada, ${username}!`);
+            } else {
+                showLoginError("Credenciales incorrectas");
+            }
+        }
+
+        function showLoginError(message) {
+            const errorDiv = document.getElementById('loginError');
+            const errorText = document.getElementById('loginErrorText');
+            
+            errorText.textContent = message;
+            errorDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        function register() {
+            const username = document.getElementById('reg-username').value;
+            const password = document.getElementById('reg-password').value;
+            const confirmPassword = document.getElementById('reg-confirm-password').value;
+            
+            if (!username || !password || !confirmPassword) {
+                showNotification('Por favor completa todos los campos', true);
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showNotification('Las contraseñas no coinciden', true);
+                return;
+            }
+            
+            if (usuarios[username]) {
+                showNotification('El usuario ya existe', true);
+                return;
+            }
+            
+            usuarios[username] = password;
+            showNotification('Usuario registrado correctamente. Ahora puedes iniciar sesión.');
+            toggleRegisterForm();
+            document.getElementById('username').value = username;
+        }
+
+        function logout() {
+            usuarioActual = null;
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('mainSection').style.display = 'none';
+            
+            // Limpiar formulario de login
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            
+            showNotification('Sesión cerrada correctamente');
+        }
+
+        function updateRecommendations() {
+            const container = document.getElementById('recommendations-container');
+            container.innerHTML = `
+                <div class="loading">
+                    <i class="fas fa-spinner"></i>
+                    <p>Cargando recomendaciones...</p>
+                </div>
+            `;
+            
+            // Obtener intereses seleccionados
+            const intereses = {
+                historia: document.getElementById('historia').checked,
+                naturaleza: document.getElementById('naturaleza').checked,
+                gastronomia: document.getElementById('gastronomia').checked,
+                arte: document.getElementById('arte').checked,
+                aventura: document.getElementById('aventura').checked
+            };
+            
+            // Simular carga asíncrona
+            setTimeout(() => {
+                // Verificar si hay intereses seleccionados
+                if (!Object.values(intereses).some(valor => valor)) {
+                    container.innerHTML = `
+                        <div class="no-results">
+                            <i class="fas fa-info-circle"></i>
+                            <p>Por favor selecciona al menos un interés para recibir recomendaciones.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Obtener municipios que coincidan con los intereses
+                const municipiosRecomendados = [];
+                
+                for (const [municipio, datos] of Object.entries(municipios)) {
+                    let coincide = true;
+                    for (const [interes, seleccionado] of Object.entries(intereses)) {
+                        if (seleccionado && !datos.caracteristicas[interes]) {
+                            coincide = false;
+                            break;
+                        }
+                    }
+                    
+                    if (coincide) {
+                        municipiosRecomendados.push(municipio);
+                    }
+                }
+                
+                // Limitar a 5 recomendaciones
+                if (municipiosRecomendados.length > 0) {
+                    const municipiosMostrar = municipiosRecomendados.slice(0, 5);
+                    
+                    let html = '<div class="recommendations">';
+                    
+                    for (const municipio of municipiosMostrar) {
+                        const datos = municipios[municipio];
+                        const caracteristicas = [];
+                        
+                        for (const [interes, valor] of Object.entries(datos.caracteristicas)) {
+                            if (valor) {
+                                caracteristicas.push(interes.charAt(0).toUpperCase() + interes.slice(1));
+                            }
+                        }
+                        
+                        html += `
+                            <div class="recommendation-card">
+                                <h3>${municipio}</h3>
+                                <p>${datos.descripcion}</p>
+                                <div class="meta">
+                                    <span><i class="fas fa-thermometer-half"></i> ${datos.clima}</span>
+                                    <span><i class="fas fa-calendar-alt"></i> ${datos.mejor_epoca}</span>
+                                </div>
+                                <p><strong>Características:</strong> ${caracteristicas.join(', ')}</p>
+                            </div>
+                        `;
+                    }
+                    
+                    html += '</div>';
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = `
+                        <div class="no-results">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <p>No encontramos municipios que coincidan exactamente con todos tus intereses. Te recomendamos ampliar tus intereses.</p>
+                        </div>
+                    `;
+                }
+            }, 800);
+        }
+
+        function loadCuriousFacts() {
+            const container = document.getElementById('curious-facts-container');
+            container.innerHTML = `
+                <div class="loading">
+                    <i class="fas fa-spinner"></i>
+                    <p>Cargando datos curiosos...</p>
+                </div>
+            `;
+            
+            // Simular carga asíncrona
+            setTimeout(() => {
+                // Seleccionar 3 municipios aleatorios
+                const municipiosKeys = Object.keys(municipios);
+                const municipiosAleatorios = [];
+                
+                for (let i = 0; i < 3; i++) {
+                    const randomIndex = Math.floor(Math.random() * municipiosKeys.length);
+                    const municipio = municipiosKeys[randomIndex];
+                    municipiosAleatorios.push(municipio);
+                }
+                
+                let html = '';
+                
+                for (const municipio of municipiosAleatorios) {
+                    const datos = municipios[municipio];
+                    html += `
+                        <div class="fact-item">
+                            <h4>${municipio}</h4>
+                            <p>${datos.dato_curioso}</p>
+                        </div>
+                    `;
+                }
+                
+                container.innerHTML = html;
+            }, 800);
+        }
+    </script>
+</body>
+</html>
